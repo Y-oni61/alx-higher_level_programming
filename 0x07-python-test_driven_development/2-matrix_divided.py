@@ -1,41 +1,29 @@
 #!/usr/bin/python3
-"""
-Module matrix_divided
-Divides each element of a matrix of numbers by a number
-"""
+"""defines function to scalar divde matrix"""
 
 
 def matrix_divided(matrix, div):
-    """Returns a new matrix (list of list)
-    with the result of the division of matrix by div
-    rounded to 2 decimal places.
-    """
-
-    if not isinstance(matrix, list) or len(matrix) == 0 or not matrix[0]:
-        raise TypeError("matrix must be a matrix (list of lists) " +
-                        "of integers/floats")
-
-    for row in matrix:
-        if len(row) == 0:
-            raise TypeError("matrix must be a matrix (list of lists) " +
-                            "of integers/floats")
-        for x in row:
-            if type(x) is not int and type(x) is not float:
-                raise TypeError("matrix must be a matrix (list of lists) " +
-                                "of integers/floats")
-
+    """divides matrix by scalar integer, rounded to two decimal places"""
+    import decimal
+    error_msg = "matrix must be a matrix (list of lists) of integers/floats"
+    if type(matrix) is not list:
+        raise TypeError(error_msg)
     len_rows = []
+    row_count = 0
     for row in matrix:
+        if type(row) is not list:
+            raise TypeError(error_msg)
         len_rows.append(len(row))
-    if not all(elem == len_rows[0] for elem in len_rows):
+        for element in row:
+            if type(element) not in [int, float]:
+                raise TypeError(error_msg)
+        row_count += 1
+    if len(set(len_rows)) > 1:
         raise TypeError("Each row of the matrix must have the same size")
-
-    if type(div) is not int and type(div) is not float:
+    if type(div) not in [int, float]:
         raise TypeError("div must be a number")
-
-    if div == 0:
+    if int(div) == 0:
         raise ZeroDivisionError("division by zero")
-
-    new_matrix = [[round(x / div, 2) for x in row] for row in matrix]
-
+    new_matrix = list(map(lambda row:
+                          list(map(lambda x: round(x/div, 2), row)), matrix))
     return new_matrix
